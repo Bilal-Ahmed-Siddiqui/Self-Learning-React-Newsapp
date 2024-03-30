@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
+import Loading from "./Loading";
 
 let pageSize = 9;
 let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=475fc797869745b6bd22c85358f454c0&pageSize=${pageSize}`;
@@ -16,34 +17,37 @@ export default class News extends Component {
   }
 
   componentDidMount = async () => {
+    this.setState({ loading: true });
     let data = await fetch(url);
     let data_json = await data.json();
     this.setState({
       articles: data_json.articles,
       totalResults: data_json.totalResults,
+      loading: false,
     });
   };
 
   previousbtn = async () => {
-    this.setState({ page: this.state.page - 1 }, async () => {
+    this.setState({ page: this.state.page - 1, loading: true }, async () => {
       let data = await fetch(url + `&page=${this.state.page}`);
       let data_json = await data.json();
-      this.setState({ articles: data_json.articles });
+      this.setState({ articles: data_json.articles, loading: false });
     });
   };
   nextbtn = async () => {
-    this.setState({ page: this.state.page + 1 }, async () => {
+    this.setState({ page: this.state.page + 1, loading: true }, async () => {
       let data = await fetch(url + `&page=${this.state.page}`);
       let data_json = await data.json();
-      this.setState({ articles: data_json.articles });
+      this.setState({ articles: data_json.articles, loading: false });
     });
   };
   render() {
     return (
       <div className="container">
         <h1 className="text-center my-3">Top Headlines</h1>
+        {this.state.loading && <Loading />}
         <div className="row my-5">
-          {this.state.articles.map((element) => {
+          {!this.state.loading && this.state.articles.map((element) => {
             return (
               <div className="col-md-4" key={element.url}>
                 <NewsItem
