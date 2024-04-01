@@ -69,14 +69,37 @@ export default class navbar extends Component {
         ve: "Venezuela",
         za: "South Africa",
       },
+      selectedCountry: "us",
+      selectedCategory: "general",
     };
   }
 
+  componentDidMount = () => {
+    this.setSelection();
+  }
+  
+  setSelection = () => {
+    this.props.selection(
+      this.state.selectedCountry,
+      this.state.selectedCategory
+    );
+  };
+  handleCategoryChange = (category) => {
+    this.setState({ selectedCategory: category }, () => {
+      this.setSelection();
+    });
+  };
+
+  handleCountryChange = (country) => {
+    this.setState({ selectedCountry: country }, () => {
+      this.setSelection();
+    });
+  };
   render() {
     return (
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
+          <a className="navbar-brand" href="/">
             Rabbit News
           </a>
           <button
@@ -113,39 +136,49 @@ export default class navbar extends Component {
                 Select Category
               </button>
               <ul className="dropdown-menu">
-                  {Object.keys(this.state.categories).map((element) => {
-                    return (
-                      <li key={element}>
-                        <a className="dropdown-item" href="#">
+                {Object.keys(this.state.categories).map((element) => {
+                  return (
+                    <li key={element}>
+                      <button
+                        className="dropdown-item"
+                        type="button"
+                        onClick={() => this.handleCategoryChange(element)}
+                      >
                         {this.state.categories[element]}
-                      </a>
-                      </li>
-                    );
-                  })}
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             <div className="dropdown mx-5">
-  <button
-    className="btn btn-secondary dropdown-toggle"
-    type="button"
-    data-bs-toggle="dropdown"
-    aria-expanded="false"
-  >
-    Select Country
-  </button>
-  <ul className="dropdown-menu" style={{ maxHeight: '200px', overflowY: 'auto' }}>
-    {Object.keys(this.state.countries).map((element) => {
-      return (
-        <li key={element}>
-          <a className="dropdown-item" href="#">
-            {this.state.countries[element]}
-          </a>
-        </li>
-      );
-    })}
-  </ul>
-</div>
-
+              <button
+                className="btn btn-secondary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Select Country
+              </button>
+              <ul
+                className="dropdown-menu"
+                style={{ maxHeight: "200px", overflowY: "auto" }}
+              >
+                {Object.keys(this.state.countries).map((element) => {
+                  return (
+                    <li key={element}>
+                      <button
+                        className="dropdown-item"
+                        type="button"
+                        onClick={() => this.handleCountryChange(element)}
+                      >
+                        {this.state.countries[element]}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         </div>
       </nav>
