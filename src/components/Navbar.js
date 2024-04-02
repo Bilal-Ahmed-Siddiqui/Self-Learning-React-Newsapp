@@ -128,7 +128,7 @@ export default class navbar extends Component {
             </ul>
             <div className="dropdown">
               <button
-                className="btn btn-secondary dropdown-toggle"
+                className="btn btn-light dropdown-toggle"
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
@@ -153,7 +153,7 @@ export default class navbar extends Component {
             </div>
             <div className="dropdown mx-5">
               <button
-                className="btn btn-secondary dropdown-toggle"
+                className="btn btn-light dropdown-toggle"
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"

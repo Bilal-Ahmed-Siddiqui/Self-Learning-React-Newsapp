@@ -64,7 +64,7 @@ export default class News extends Component {
     us: "United States",
     ve: "Venezuela",
     za: "South Africa",
-  }
+  };
   static propTypes = {
     country: PropTypes.string,
     category: PropTypes.string,
@@ -80,27 +80,10 @@ export default class News extends Component {
       totalResults: 0,
     };
   }
-  componentDidUpdate = async (prevProps, prevState) => {
-    if (
-      prevProps.country !== this.props.country ||
-      prevProps.category !== this.props.category ||
-      prevProps.pageSize !== this.props.pageSize
-    ) {
-      this.setState({ loading: true });
-      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=475fc797869745b6bd22c85358f454c0&pageSize=${this.props.pageSize}`;
-      let data = await fetch(url);
-      let data_json = await data.json();
-      this.setState({
-        articles: data_json.articles,
-        totalResults: data_json.totalResults,
-        loading: false,
-      });
-    }
-  };
-
-  componentDidMount = async () => {
+  update_news = async () => {
     this.setState({ loading: true });
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=475fc797869745b6bd22c85358f454c0&pageSize=${this.props.pageSize}`;
+    console.log(this.state.page);
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=475fc797869745b6bd22c85358f454c0&pageSize=${this.props.pageSize}&page=${this.state.page}`;
     let data = await fetch(url);
     let data_json = await data.json();
     this.setState({
@@ -109,28 +92,44 @@ export default class News extends Component {
       loading: false,
     });
   };
+  componentDidUpdate = (prevProps) => {
+    if (
+      prevProps.country !== this.props.country ||
+      prevProps.category !== this.props.category ||
+      prevProps.pageSize !== this.props.pageSize
+    ) {
+      this.setState({ page: 1 }, () => {
+        this.update_news();
+      });
+      this.update_news();
+    }
+  };
 
-  previousbtn = async () => {
-    this.setState({ page: this.state.page - 1, loading: true }, async () => {
-      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=475fc797869745b6bd22c85358f454c0&pageSize=${this.props.pageSize}`;
-      let data = await fetch(url + `&page=${this.state.page}`);
-      let data_json = await data.json();
-      this.setState({ articles: data_json.articles, loading: false });
+  componentDidMount = () => {
+    this.update_news();
+  };
+
+  previousbtn = () => {
+    this.setState({ page: this.state.page - 1 }, () => {
+      this.update_news();
     });
   };
-  nextbtn = async () => {
-    this.setState({ page: this.state.page + 1, loading: true }, async () => {
-      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=475fc797869745b6bd22c85358f454c0&pageSize=${this.props.pageSize}`;
-      let data = await fetch(url + `&page=${this.state.page}`);
-      let data_json = await data.json();
-      this.setState({ articles: data_json.articles, loading: false });
+
+  nextbtn = () => {
+    this.setState({ page: this.state.page + 1 }, () => {
+      this.update_news();
     });
   };
   render() {
     return (
       <div className="container">
         <h1 className="text-center my-3">Top Headlines</h1>
-        <h3 className="text-center my-1">About {this.props.category.charAt(0).toUpperCase() + this.props.category.slice(1)} from {this.countries[this.props.country]}</h3>
+        <h3 className="text-center my-1">
+          About{" "}
+          {this.props.category.charAt(0).toUpperCase() +
+            this.props.category.slice(1)}{" "}
+          from {this.countries[this.props.country]}
+        </h3>
         {this.state.loading && <Loading />}
         <div className="row my-5">
           {!this.state.loading &&
@@ -150,8 +149,8 @@ export default class News extends Component {
                         : "https://img.freepik.com/free-photo/network-connection-graphic-overlay-background-computer-screen_53876-120776.jpg?w=826&t=st=1711750966~exp=1711751566~hmac=8388c642d1362169486e97a60ccc9b2ff56eb99992e756cdb34a08c483737d77"
                     }
                     url={element.url}
-                    author = {element.author}
-                    publishedAt = {element.publishedAt}
+                    author={element.author}
+                    publishedAt={element.publishedAt}
                   />
                 </div>
               );
