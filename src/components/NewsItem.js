@@ -13,7 +13,7 @@ export default class NewsItem extends Component {
             <h5 className="card-title">{title}...</h5>
             <p className="card-text">{desc}...</p>
             <p className="card-text"><small className="text-body-secondary">By {author} on {d.toGMTString()}</small></p>
-            <a href={url} target="_blank" className="btn bt-sm btn-dark ">
+            <a href={url} target="_blank" rel="noreferrer" className="btn bt-sm btn-dark ">
               Read more
             </a>
           </div>
