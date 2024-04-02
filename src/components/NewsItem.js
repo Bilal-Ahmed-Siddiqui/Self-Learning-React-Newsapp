@@ -2,7 +2,9 @@ import React, { Component } from "react";
 
 export default class NewsItem extends Component {
   render() {
-    let { title, desc, imageurl, url } = this.props;
+    let { title, desc, imageurl, url, author, publishedAt } = this.props;
+    let d = new Date(publishedAt);
+
     return (
       <div className="container d-flex justify-content-center">
         <div className="card" style={{ width: "22rem" }}>
@@ -10,7 +12,8 @@ export default class NewsItem extends Component {
           <div className="card-body">
             <h5 className="card-title">{title}...</h5>
             <p className="card-text">{desc}...</p>
-            <a href={url} target="_blank" className="btn bt-sm btn-primary ">
+            <p className="card-text"><small className="text-body-secondary">By {author} on {d.toGMTString()}</small></p>
+            <a href={url} target="_blank" className="btn bt-sm btn-dark ">
               Read more
             </a>
           </div>

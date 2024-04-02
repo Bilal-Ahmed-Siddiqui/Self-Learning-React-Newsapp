@@ -150,6 +150,8 @@ export default class News extends Component {
                         : "https://img.freepik.com/free-photo/network-connection-graphic-overlay-background-computer-screen_53876-120776.jpg?w=826&t=st=1711750966~exp=1711751566~hmac=8388c642d1362169486e97a60ccc9b2ff56eb99992e756cdb34a08c483737d77"
                     }
                     url={element.url}
+                    author = {element.author}
+                    publishedAt = {element.publishedAt}
                   />
                 </div>
               );
