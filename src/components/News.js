@@ -8,6 +8,7 @@ export default class News extends Component {
     country: "us",
     category: "general",
     pageSize: 9,
+    apiKey: ""
   };
   countries = {
     ae: "United Arab Emirates",
@@ -68,22 +69,23 @@ export default class News extends Component {
   static propTypes = {
     country: PropTypes.string,
     category: PropTypes.string,
+    apiKey: PropTypes.string,
     pageSize: PropTypes.number,
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       articles: [],
       loading: false,
       page: 1,
       totalResults: 0,
     };
+    
   }
   update_news = async () => {
     this.setState({ loading: true });
-    console.log(this.state.page);
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=475fc797869745b6bd22c85358f454c0&pageSize=${this.props.pageSize}&page=${this.state.page}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&pageSize=${this.props.pageSize}&page=${this.state.page}`;
     let data = await fetch(url);
     let data_json = await data.json();
     this.setState({
@@ -100,8 +102,11 @@ export default class News extends Component {
     ) {
       this.setState({ page: 1 }, () => {
         this.update_news();
+        document.title = `${
+          this.props.category.charAt(0).toUpperCase() +
+          this.props.category.slice(1)
+        }  - Rabbit News`;
       });
-      this.update_news();
     }
   };
 
