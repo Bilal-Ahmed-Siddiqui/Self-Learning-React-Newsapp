@@ -1,32 +1,27 @@
 import "./App.css";
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import News from "./components/News";
 
-export default class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      countrycode: "us",
-      category: "general",
-      apiKey: process.env.REACT_APP_NEWS_API
-    };
-  }
+const App = () => {
+  const [countrycode, setCountrycode] = useState("us");
+  const [category, setCategory] = useState("general");
 
-  selection = (country, category) => {
-    this.setState({ country, category });
+  const selection = (country, category) => {
+    setCountrycode(country);
+    setCategory(category);
   };
-  render() {
-    return (
-      <div>
-        <Navbar selection={this.selection} />
-        <News
-          pageSize={9}
-          country={this.state.country}
-          category={this.state.category}
-          apiKey={this.state.apiKey}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <Navbar selection={selection} />
+      <News
+        pageSize={9}
+        country={countrycode}
+        category={category}
+        apiKey={process.env.REACT_APP_NEWS_API}
+      />
+    </div>
+  );
+};
+
+export default App;
