@@ -84,7 +84,7 @@ const NavBar = (props) => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
+    <nav className="navbar navbar-expand-lg bg-dark navbar-dark sticky-top">
       <div className="container-fluid">
         <a className="navbar-brand" href="/">
           Rabbit News
